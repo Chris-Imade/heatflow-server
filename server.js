@@ -57,10 +57,90 @@ app.post("/contact", async (req, res) => {
     </div>
   `;
 
+  const thanksMessage = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Thank You Email</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          color: #333;
+          margin: 0;
+          padding: 0;
+        }
+        .email-container {
+          max-width: 600px;
+          margin: 20px auto;
+          background: #ffffff;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          background-color: #3855b3;
+          padding: 20px;
+          text-align: center;
+          color: white;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 24px;
+        }
+        .body {
+          padding: 20px;
+          line-height: 1.6;
+        }
+        .footer {
+          background-color: #f4f4f4;
+          text-align: center;
+          padding: 10px;
+          font-size: 14px;
+          color: #666;
+        }
+        .footer a {
+          color: #3855b3;
+          text-decoration: none;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+          <h1>Thank You!</h1>
+        </div>
+
+        <!-- Body -->
+        <div class="body">
+          <p>Hi <strong>${name}</strong>,</p>
+          <p>Thank you for reaching out to us at <strong>HeatFlow Experts</strong>. We have received your message and our team is currently reviewing your request. We will get back to you as soon as possible.</p>
+          <p>If you have any urgent inquiries, feel free to contact us directly at <strong>+234 903 316 2469, +1 (575) 205-6122</strong> or reply to this email.</p>
+          <p>We appreciate your patience and look forward to assisting you!</p>
+          <p>Best regards,</p>
+          <p><strong>The HeatFlow Experts Team</strong></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+          <p>&copy; 2025 HeatFlow Experts. All rights reserved.</p>
+          <p>
+            <a href="https://instructo.africa">Visit our website</a> |
+            <a href="mailto:info@instructo.africa">Email us</a>
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
   try {
     const info = await transporter.sendMail({
       from: process.env.email,
-      to: email,
+      to: thanksMessage,
       subject: "New Contact Form Submission",
       html: contactEmailTemplate,
       attachments: [
@@ -78,13 +158,11 @@ app.post("/contact", async (req, res) => {
       .send({ message: "Contact form submitted successfully", status: 200 });
   } catch (error) {
     console.error("Error sending contact email:", error);
-    res
-      .status(500)
-      .send({
-        message: "Error submitting contact form",
-        status: 500,
-        error: error.message,
-      });
+    res.status(500).send({
+      message: "Error submitting contact form",
+      status: 500,
+      error: error.message,
+    });
   }
 });
 
@@ -126,13 +204,11 @@ app.post("/subscribe", async (req, res) => {
     res.status(200).send({ message: "Subscription successful", status: 200 });
   } catch (error) {
     console.error("Error sending subscription email:", error);
-    res
-      .status(500)
-      .send({
-        message: "Error submitting subscription",
-        status: 500,
-        error: error.message,
-      });
+    res.status(500).send({
+      message: "Error submitting subscription",
+      status: 500,
+      error: error.message,
+    });
   }
 });
 
