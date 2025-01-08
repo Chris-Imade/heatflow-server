@@ -140,7 +140,21 @@ app.post("/contact", async (req, res) => {
   try {
     const info = await transporter.sendMail({
       from: process.env.email,
-      to: thanksMessage,
+      to: email,
+      subject: "New Contact Form Submission",
+      html: thanksMessage,
+      attachments: [
+        {
+          filename: "logo.png",
+          path: logoPath,
+          cid: "logo",
+        },
+      ],
+    });
+
+    const report = await transporter.sendMail({
+      from: process.env.email,
+      to: "info@heatflowexperts.co.uk",
       subject: "New Contact Form Submission",
       html: contactEmailTemplate,
       attachments: [
@@ -153,6 +167,7 @@ app.post("/contact", async (req, res) => {
     });
 
     console.log("Contact email sent:", info.messageId);
+    console.log("Contact email sent:", report.messageId);
     res
       .status(200)
       .send({ message: "Contact form submitted successfully", status: 200 });
@@ -185,6 +200,21 @@ app.post("/subscribe", async (req, res) => {
     </div>
   `;
 
+  const subscribeEmailReport = `
+    <div style="font-family: Arial, sans-serif; color: #333;">
+      <div style="background-color: #f4f4f4; padding: 20px; text-align: center;">
+        <img src="cid:logo" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
+      </div>
+      <div style="padding: 20px;">
+        <p>You have a new subscriber from HeatFlow Experts!</p>
+        <p><strong>Email:</strong> ${email}</p>
+      </div>
+      <div style="background-color: #3855b3; padding: 20px; text-align: center; color: white;">
+        <p>&copy; 2025 HeatFlow Experts. All rights reserved.</p>
+      </div>
+    </div>
+  `;
+
   try {
     const info = await transporter.sendMail({
       from: process.env.email,
@@ -200,7 +230,22 @@ app.post("/subscribe", async (req, res) => {
       ],
     });
 
+    const report = await transporter.sendMail({
+      from: process.env.email,
+      to: "info@heatflowexperts.co.uk",
+      subject: "New Subscription",
+      html: subscribeEmailReport,
+      attachments: [
+        {
+          filename: "logo.png",
+          path: logoPath,
+          cid: "logo",
+        },
+      ],
+    });
+
     console.log("Subscription email sent:", info.messageId);
+    console.log("Subscription email sent:", report.messageId);
     res.status(200).send({ message: "Subscription successful", status: 200 });
   } catch (error) {
     console.error("Error sending subscription email:", error);
