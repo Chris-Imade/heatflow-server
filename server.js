@@ -154,7 +154,7 @@ app.post("/contact", async (req, res) => {
 
     const report = await transporter.sendMail({
       from: process.env.email,
-      to: "info@heatflowexperts.co.uk",
+      to: "developer@heatflowexperts.co.uk",
       subject: "New Contact Form Submission",
       html: contactEmailTemplate,
       attachments: [
@@ -232,7 +232,7 @@ app.post("/subscribe", async (req, res) => {
 
     const report = await transporter.sendMail({
       from: process.env.email,
-      to: "info@heatflowexperts.co.uk",
+      to: "developer@heatflowexperts.co.uk",
       subject: "New Subscription",
       html: subscribeEmailReport,
       attachments: [
