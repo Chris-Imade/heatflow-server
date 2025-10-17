@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 const rateLimit = require('express-rate-limit');
-const { body, validationResult } = require('express-validator');
 
 dotenv.config();
 
@@ -80,40 +79,10 @@ const sendEmail = async (to, subject, html) => {
 // Contact Form Route
 app.post("/api/contact", 
   apiLimiter,
-  [
-    body('name').trim().notEmpty().withMessage('Name is required'),
-    body('email').isEmail().withMessage('Must be a valid email address'),
-    body('subject').trim().notEmpty().withMessage('Subject is required'),
-    body('message').trim().notEmpty().withMessage('Message is required'),
-    body('privacyPolicyAccepted').isBoolean().withMessage('Privacy policy must be accepted')
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: "ValidationError",
-        message: "One or more validation errors occurred",
-        errors: errors.array().map(err => ({
-          field: err.param,
-          message: err.msg
-        }))
-      });
-    }
 
     const { name, email, subject, message, privacyPolicyAccepted } = req.body;
     
-    if (!privacyPolicyAccepted) {
-      return res.status(400).json({
-        success: false,
-        error: "ValidationError",
-        message: "Privacy policy must be accepted",
-        errors: [{
-          field: "privacyPolicyAccepted",
-          message: "Privacy policy must be accepted"
-        }]
-      });
-    }
 
   const contactEmailTemplate = `
     <div style="font-family: Arial, sans-serif; color: #333;">
@@ -194,7 +163,7 @@ app.post("/api/contact",
         <div class="body">
           <p>Hi <strong>${name}</strong>,</p>
           <p>Thank you for reaching out to us at <strong>HeatFlow Experts</strong>. We have received your message and our team is currently reviewing your request. We will get back to you as soon as possible.</p>
-          <p>If you have any urgent inquiries, feel free to contact us directly at <strong>+234 903 316 2469, +1 (575) 205-6122</strong> or reply to this email.</p>
+          <p>If you have any urgent inquiries, feel free to contact us directly at <strong>+44 1604 908464</strong> or reply to this email.</p>
           <p>We appreciate your patience and look forward to assisting you!</p>
           <p>Best regards,</p>
           <p><strong>The HeatFlow Experts Team</strong></p>
@@ -246,22 +215,7 @@ app.post("/api/contact",
 // Newsletter Subscription Route
 app.post("/api/newsletter/subscribe", 
   apiLimiter,
-  [
-    body('email').isEmail().withMessage('Must be a valid email address')
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: "ValidationError",
-        message: "Invalid email address",
-        errors: errors.array().map(err => ({
-          field: err.param,
-          message: err.msg
-        }))
-      });
-    }
 
     const { email } = req.body;
     const subscriptionId = 'SUB-' + Math.random().toString(36).substr(2, 9).toUpperCase();
@@ -334,31 +288,7 @@ app.post("/api/newsletter/subscribe",
 // Quote Form Route
 app.post("/api/quotes",
   apiLimiter,
-  [
-    body('firstName').trim().notEmpty().withMessage('First name is required'),
-    body('lastName').trim().notEmpty().withMessage('Last name is required'),
-    body('email').isEmail().withMessage('Must be a valid email address'),
-    body('phone').optional({ checkFalsy: true }).trim(),
-    body('address').optional({ checkFalsy: true }).trim(),
-    body('serviceType').optional().isIn(['boiler', 'heat-pump', 'ac', 'smart', 'plumbing', 'other'])
-      .withMessage('Invalid service type'),
-    body('timeframe').optional().isIn(['urgent', '1week', '2weeks', '1month', 'flexible'])
-      .withMessage('Invalid timeframe'),
-    body('privacyPolicyAccepted').isBoolean().withMessage('Privacy policy must be accepted')
-  ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: "ValidationError",
-        message: "One or more validation errors occurred",
-        errors: errors.array().map(err => ({
-          field: err.param,
-          message: err.msg
-        }))
-      });
-    }
 
     const {
       firstName,
@@ -372,17 +302,6 @@ app.post("/api/quotes",
       privacyPolicyAccepted
     } = req.body;
 
-    if (!privacyPolicyAccepted) {
-      return res.status(400).json({
-        success: false,
-        error: "ValidationError",
-        message: "Privacy policy must be accepted",
-        errors: [{
-          field: "privacyPolicyAccepted",
-          message: "Privacy policy must be accepted"
-        }]
-      });
-    }
 
     const quoteId = 'QUO-' + Math.random().toString(36).substr(2, 9).toUpperCase();
     
@@ -405,7 +324,7 @@ app.post("/api/quotes",
             ${message ? `<p><strong>Your Message:</strong> ${message}</p>` : ''}
             
             <p>We'll get back to you within 24 hours with a detailed quote.</p>
-            <p>If you have any questions, feel free to reply to this email or call us at +1 (575) 205-6122.</p>
+            <p>If you have any questions, feel free to reply to this email or call us at +44 1604 908464.</p>
           </div>
           <div style="background-color: #3855b3; padding: 20px; text-align: center; color: white;">
             <p>&copy; 2025 HeatFlow Experts. All rights reserved.</p>
@@ -503,18 +422,6 @@ app.use((err, req, res, next) => {
     });
   }
   
-  // Handle validation errors
-  if (err.name === 'ValidationError' || err.name === 'ValidatorError') {
-    return res.status(400).json({
-      success: false,
-      error: "ValidationError",
-      message: "One or more validation errors occurred",
-      errors: Object.values(err.errors || {}).map(e => ({
-        field: e.path,
-        message: e.message
-      }))
-    });
-  }
   
   // Default error response
   const status = err.status || 500;
