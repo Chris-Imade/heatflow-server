@@ -118,7 +118,7 @@ app.post("/api/contact",
   const contactEmailTemplate = `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <div style="background-color: #f4f4f4; padding: 20px; text-align: center;">
-        <img src="cid:logo" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
+        <img src="https://heatflowexperts.co.uk/img/logo.png" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
       </div>
       <div style="padding: 20px;">
         <p><strong>Name:</strong> ${name}</p>
@@ -272,7 +272,7 @@ app.post("/api/newsletter/subscribe",
   const subscribeEmailTemplate = `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <div style="background-color: #f4f4f4; padding: 20px; text-align: center;">
-        <img src="cid:logo" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
+        <img src="https://heatflowexperts.co.uk/img/logo.png" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
       </div>
       <div style="padding: 20px;">
         <p>Thank you for subscribing to HeatFlow Experts!</p>
@@ -287,7 +287,7 @@ app.post("/api/newsletter/subscribe",
   const subscribeEmailReport = `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <div style="background-color: #f4f4f4; padding: 20px; text-align: center;">
-        <img src="cid:logo" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
+        <img src="https://heatflowexperts.co.uk/img/logo.png" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
       </div>
       <div style="padding: 20px;">
         <p>You have a new subscriber from HeatFlow Experts!</p>
@@ -417,7 +417,7 @@ app.post("/api/quotes",
       const adminEmailTemplate = `
         <div style="font-family: Arial, sans-serif; color: #333;">
           <div style="background-color: #f4f4f4; padding: 20px; text-align: center;">
-            <img src="cid:logo" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
+            <img src="https://heatflowexperts.co.uk/img/logo.png" alt="HeatFlow Experts Logo" style="max-width: 150px; margin-bottom: 20px;">
           </div>
           <div style="padding: 20px;">
             <h2>New Quote Request #${quoteId}</h2>
