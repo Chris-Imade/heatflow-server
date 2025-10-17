@@ -24,7 +24,7 @@ const apiLimiter = rateLimit({
 
 // Middleware
 app.use(cors({ 
-  origin: ["https://heatflowexperts.co.uk", "http://127.0.0.1:5500"],
+  origin: ["https://heatflowexperts.co.uk", "http://127.0.0.1:5500", "https://heatflow-server.onrender.com"],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"]
 }));
@@ -221,7 +221,7 @@ app.post("/api/contact",
       
       // Send notification to admin
       await sendEmail(
-        process.env.ADMIN_EMAIL || "developer@heatflowexperts.co.uk",
+        process.env.ADMIN_EMAIL || "info@heatflowexperts.co.uk",
         `New Contact Form Submission: ${subject}`,
         contactEmailTemplate
       );
@@ -305,7 +305,7 @@ app.post("/api/newsletter/subscribe",
       
       // Send notification to admin
       await sendEmail(
-        process.env.ADMIN_EMAIL || "developer@heatflowexperts.co.uk",
+        process.env.ADMIN_EMAIL || "info@heatflowexperts.co.uk",
         "New Newsletter Subscription",
         subscribeEmailReport
       );
@@ -446,7 +446,7 @@ app.post("/api/quotes",
       
       // Send notification to admin
       await sendEmail(
-        process.env.ADMIN_EMAIL || "developer@heatflowexperts.co.uk",
+        process.env.ADMIN_EMAIL || "info@heatflowexperts.co.uk",
         `New Quote Request: ${firstName} ${lastName} - ${serviceType}`,
         adminEmailTemplate
       );
