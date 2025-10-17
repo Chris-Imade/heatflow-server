@@ -24,7 +24,7 @@ const apiLimiter = rateLimit({
 
 // Middleware
 app.use(cors({ 
-  origin: "https://heatflowexperts.co.uk",
+  origin: ["https://heatflowexperts.co.uk", "http://127.0.0.1:5500"],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"]
 }));
