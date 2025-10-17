@@ -338,11 +338,11 @@ app.post("/api/quotes",
     body('firstName').trim().notEmpty().withMessage('First name is required'),
     body('lastName').trim().notEmpty().withMessage('Last name is required'),
     body('email').isEmail().withMessage('Must be a valid email address'),
-    body('phone').trim().notEmpty().withMessage('Phone number is required'),
-    body('address').trim().notEmpty().withMessage('Address is required'),
-    body('serviceType').isIn(['boiler', 'heat-pump', 'ac', 'smart', 'plumbing', 'other'])
+    body('phone').optional({ checkFalsy: true }).trim(),
+    body('address').optional({ checkFalsy: true }).trim(),
+    body('serviceType').optional().isIn(['boiler', 'heat-pump', 'ac', 'smart', 'plumbing', 'other'])
       .withMessage('Invalid service type'),
-    body('timeframe').isIn(['urgent', '1week', '2weeks', '1month', 'flexible'])
+    body('timeframe').optional().isIn(['urgent', '1week', '2weeks', '1month', 'flexible'])
       .withMessage('Invalid timeframe'),
     body('privacyPolicyAccepted').isBoolean().withMessage('Privacy policy must be accepted')
   ],
