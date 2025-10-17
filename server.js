@@ -43,16 +43,20 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configure ZeptoMail
-const zeptoClient = new SendMailClient({
-  url: `https://${process.env.ZEPTO_HOST}`,  // Add https:// protocol
-  token: process.env.ZEPTO_SEND_MAIL_TOKEN
+// Configure ZeptoMail HTTP Client
+const axios = require('axios');
+const zeptoClient = axios.create({
+  baseURL: `https://${process.env.ZEPTO_HOST}/v1.1`,
+  headers: {
+    'Authorization': process.env.ZEPTO_SEND_MAIL_TOKEN,
+    'Content-Type': 'application/json'
+  }
 });
 
 // Helper function to send email
 const sendEmail = async (to, subject, html) => {
   try {
-    return await zeptoClient.sendMail({
+    const response = await zeptoClient.post('/email', {
       from: {
         address: `noreply@${process.env.ZEPTO_SENDR_DOMAIN}`,
         name: "HeatFlow Experts"
@@ -65,9 +69,11 @@ const sendEmail = async (to, subject, html) => {
       subject: subject,
       htmlbody: html
     });
+    
+    return response.data;
   } catch (error) {
-    console.error('ZeptoMail Error:', error);
-    throw error;
+    console.error('ZeptoMail Error:', error.response?.data || error.message);
+    throw new Error('Failed to send email');
   }
 };
 
